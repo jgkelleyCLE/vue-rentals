@@ -7,6 +7,7 @@ import ProductCategory from "@/views/ProductCategory.vue";
 import ProductDetails from "@/views/ProductDetails.vue";
 import Products from "@/views/Products.vue";
 import Search from "@/views/Search.vue";
+import Thanks from "@/views/Thanks.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -56,6 +57,11 @@ const router = createRouter({
             path: '/category/:slug',
             name: 'Category',
             component: ProductCategory
+        },
+        {
+            path: '/thank-you',
+            name: 'Thank You',
+            component: Thanks
         }
     ]
         

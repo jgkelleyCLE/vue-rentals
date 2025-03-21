@@ -83,28 +83,79 @@ export const useCartStore = defineStore('cartStore', {
                 this.checkoutStatus = 'idle'
             }
         },
-        async sendEmail(  {cartList, subtotal, deliveryFee, taxPrice, total, email, selected, title} ) {
-            this.checkoutStatus = 'pending'
+        // async sendEmail( cartList, subtotal, deliveryFee, taxPrice, total, email, selected, title ) {
+        //     this.checkoutStatus = 'pending'
 
-            try {
+        //     console.log("DATA COMING IN: ", cartList, subtotal, deliveryFee, taxPrice, total, email, selected, title)
+
+        //     try {
                 
-                const response = await fetch(`/api/mail/send`, {
+        //         const response = await fetch(`https://tentlify-ecom.up.railway.app/api/mail/send`, {
+        //             method: 'POST',
+        //             headers: {
+                        
+        //                  "Access-Control-Allow-Origin": "*",
+        //                'Content-Type': 'application/json',
+                        
+        //            },
+        //             body: JSON.stringify({ cartList, subtotal, deliveryFee, taxPrice, total, email, selected, title }),
+                    
+        //         })
+
+        //         const data = await response.json().catch(() => ({}));
+        //         return data;
+
+        //     } catch (error) {
+        //         console.error("Email send error:", error);
+        //         throw error; 
+        //     } finally {
+        //         this.checkoutStatus = 'idle'
+        //     }
+        // }
+        async sendEmail({ cartList, subtotal, deliveryFee, taxPrice, total, email, selected, title }) {
+            this.checkoutStatus = 'pending';
+            
+            try {
+                console.log("Sending email with data:", { email, title, selected });
+                
+                const response = await fetch(`https://tentlify-ecom.up.railway.app/api/mail/send`, {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ cartList, subtotal, deliveryFee, taxPrice, total, email, selected, title }),
-                    
-                })
-
-                const data = await response.json().catch(() => ({}));
+                    body: JSON.stringify({ 
+                        cartList, 
+                        subtotal, 
+                        deliveryFee, 
+                        taxPrice, 
+                        total, 
+                        email, 
+                        selected, 
+                        title 
+                    })
+                });
+                
+                // Log response status for debugging
+                console.log("Response status:", response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error("Error response body:", errorText);
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                this.checkoutStatus = 'success';
                 return data;
-
+                
             } catch (error) {
                 console.error("Email send error:", error);
+                this.checkoutStatus = 'error';
+                this.checkoutError = error.message;
                 throw error; 
             } finally {
-                this.checkoutStatus = 'idle'
+                this.checkoutStatus = 'idle';
             }
         }
     }
