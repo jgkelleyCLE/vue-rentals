@@ -29,12 +29,6 @@ let cartCount = computed(()=> cartStore.cart.length)
 let cartList = computed(()=> cartStore.cart)
 let subtotal = computed(()=> cartStore.cart.reduce((acc, item) => acc + item.price * item.cartQuantity, 0))
 
-onMounted(()=> {
-  console.log('Cart:', cartStore.cart)
-})
-
-
-
 
 const navigateToProduct = async (productId) => {
   open.value = false;
@@ -45,6 +39,7 @@ const navigateToProduct = async (productId) => {
     router.push(`/product/${productId}`);
   }, 100);
 };
+
 
 const removeHandler = (item) => {
   cartStore.removeFromCart(item)
@@ -66,8 +61,11 @@ const removeHandler = (item) => {
 
         <!-- EMPTY CART -->
         <div v-if="cartCount === 0" class="flex flex-col items-center justify-center py-6">
-          <p class="text-gray-500">Your cart is empty</p>
-          <RouterLink to="/product" class="bg-safariGreen p-2 rounded-md hover:bg-safariGreenHover transition duration-300">View Products</RouterLink>
+          <p class="text-gray-500 text-xl">Your cart is empty</p>
+          <button @click="()=> {
+            open = false;
+            router.push('/product');
+          }" class="bg-safariGreen p-2 rounded-md hover:bg-safariGreenHover transition duration-300 text-white font-bold mt-2">View Products</button>
         </div>
 <div v-else>
         <div v-for="item in cartList" >

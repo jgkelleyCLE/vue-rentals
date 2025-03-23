@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router';
 import { computed, ref } from 'vue';
 import { CoPlus, CoMinus, IoClose } from "oh-vue-icons/icons";
 import EmailModal from '@/components/custom/Email/EmailModal.vue';
+import { toast } from 'vue-sonner';
 
 
 addIcons(CoPlus, CoMinus, IoClose)
@@ -39,24 +40,29 @@ const removeHandler = (item) => {
 
 <template>
     <div class="mt-20 mx-8 w-11/12">
-    <!-- EMPTY CART -->
-    <!-- <div v-if="cartList.length === 0">
-    <div class="flex flex-col items-center justify-center gap-2 h-[50vh]">
-        <h1 class="text-2xl">Cart is empty</h1>
-        <a href="/product" class="bg-safariOrange hover:bg-safariOrangeHover p-2 px-6 rounded-md text-white transition duration-300font-boldmt-8" >View Products</a>
-    </div> -->
+    <h1 class="text-2xl">Cart</h1>
     
     <div class="flex flex-col items-center w-11/12 mx-auto">
 
-    
+        <div v-if="cartList.length === 0">
+    <div class="flex flex-col items-center justify-center gap-2 h-[50vh]">
+        <h1 class="text-2xl">Cart is empty</h1>
+        <a href="/product" class="bg-safariGreen hover:bg-safariGreenHover p-2 px-6 rounded-md text-white transition duration-300 font-bold mt-8" >View Products</a>
+    </div>
+        </div>
        
     
-    <h1 class="text-2xl">Cart</h1>
     
-    <div class="flex flex-col md:flex-row md:items-start items-center w-full mx-auto max-w-[1600px]">
+        
+    
+    <div v-else class="flex flex-col md:flex-row md:items-start items-center w-full mx-auto max-w-[1600px]">
 
         <!-- LEFT SIDE -->
-        <div class="w-[95%] md:w-[65%] mx-4" >
+        <div class="w-[95%] md:w-[65%] mx-4 " >
+
+
+            <!-- EMPTY CART -->
+    
             
             <div class="flex items-center justify-between p-2 shadow-md shadow-black/20 dark:bg-gray-800 bg-gray-100 w-full rounded-md my-2 relative" v-for="item in cartList">
                 <div class="flex items-start ">

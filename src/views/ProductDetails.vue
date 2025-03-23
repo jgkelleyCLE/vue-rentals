@@ -19,8 +19,6 @@ onMounted( async()=> {
 const product = computed(() => productStore.product);
 
 
-console.log('product:', product)
-
 const cartHandler = (product) => {
     if(quantity.value < 1){
         toast.error('Quantity must be at least 1')

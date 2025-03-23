@@ -34,7 +34,7 @@ addIcons(ViFileTypeVue);
             />
         </div>
         <h1 class="text-2xl text-center">Thank you for your interest in Tentlify Rentals!</h1>
-        <p>Your email will arrive momentarily.</p>
+        <!-- <p>Your email will arrive momentarily.</p> -->
         <p class="italic text-center">This is a fictitious website to test and learn the benefits of SEO.</p>
         
         <a 

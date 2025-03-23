@@ -112,17 +112,19 @@ export const useCartStore = defineStore('cartStore', {
         //         this.checkoutStatus = 'idle'
         //     }
         // }
-        async sendEmail({ cartList, subtotal, deliveryFee, taxPrice, total, email, selected, title }) {
+        async sendEmail(cartList, subtotal, deliveryFee, taxPrice, total, email, selected, title) {
             this.checkoutStatus = 'pending';
-            
+        
             try {
-                console.log("Sending email with data:", { email, title, selected });
+                console.log("Sending email with params:", {
+                    cartItems: Array.isArray(cartList) ? cartList.length : 0,
+                    email, selected, title
+                });
                 
                 const response = await fetch(`https://tentlify-ecom.up.railway.app/api/mail/send`, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-type': 'application/json'  // Note: lowercase 't' in Content-type to match Svelte
                     },
                     body: JSON.stringify({ 
                         cartList, 
@@ -136,16 +138,13 @@ export const useCartStore = defineStore('cartStore', {
                     })
                 });
                 
-                // Log response status for debugging
-                console.log("Response status:", response.status);
-                
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error("Error response body:", errorText);
                     throw new Error(`Server error: ${response.status}`);
                 }
                 
-                const data = await response.json();
+                const data = await response.json().catch(() => ({}));
                 this.checkoutStatus = 'success';
                 return data;
                 
@@ -153,7 +152,7 @@ export const useCartStore = defineStore('cartStore', {
                 console.error("Email send error:", error);
                 this.checkoutStatus = 'error';
                 this.checkoutError = error.message;
-                throw error; 
+                throw error;
             } finally {
                 this.checkoutStatus = 'idle';
             }

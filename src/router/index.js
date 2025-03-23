@@ -1,12 +1,15 @@
 import Admin from "@/views/Admin.vue";
+import AllSearches from "@/views/AllSearches.vue";
 import Cart from "@/views/Cart.vue";
 import Gallery from "@/views/Gallery.vue";
 import Home from "@/views/Home.vue";
 import Location from "@/views/Location.vue";
+import OrderDetails from "@/views/OrderDetails.vue";
 import ProductCategory from "@/views/ProductCategory.vue";
 import ProductDetails from "@/views/ProductDetails.vue";
 import Products from "@/views/Products.vue";
 import Search from "@/views/Search.vue";
+import SearchDetails from "@/views/SearchDetails.vue";
 import Thanks from "@/views/Thanks.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -62,6 +65,21 @@ const router = createRouter({
             path: '/thank-you',
             name: 'Thank You',
             component: Thanks
+        },
+        {
+            path: '/order/:id',
+            name: 'Order',
+            component: OrderDetails
+        },
+        {
+            path: '/admin/search-details/:id',
+            name: 'Admin Search Details',
+            component: SearchDetails
+        },
+        {
+            path: '/admin/all-searches',
+            name: 'All Searches',
+            component: AllSearches
         }
     ]
         

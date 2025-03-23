@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { sendEmail, sendEmailWithAxios } from '@/lib/api/emailApi';
 import { useCartStore } from '@/stores/CartStore';
 import { useMutation } from '@tanstack/vue-query';
   import { ref, defineProps } from 'vue';
@@ -32,17 +33,7 @@ let date = ref('')
 let email = ref('')
 let title = ref('')
 
-const emailMutation = useMutation({
-  mutationFn: (emailData)=> cartStore.sendEmail(emailData),
-  onError: (error) => {
-    console.log('Error:', error)
-    toast.error('Error sending email')
-  },
-  onSuccess: (data) => {
-    console.log('Data:', data)
-    toast.success('Email sent successfully')
-  }
-})
+
 
 const orderMutation = useMutation({
   mutationFn: ()=> cartStore.submitOrder({
@@ -64,7 +55,22 @@ const orderMutation = useMutation({
   }
 })
 
-const submitHandler = (e) => {
+const emailMutation = useMutation({
+  
+  mutationKey: ['sendEmail'],
+  mutationFn: (emailData)=> sendEmailWithAxios(emailData),
+            
+  onError: (error) => {
+    console.log('Error:', error)
+    toast.error('Error sending email')
+  },
+  onSuccess: (data) => {
+    console.log('Data:', data)
+    toast.success('Email sent successfully')
+  }
+})
+
+const submitHandler = async(e) => {
     e.preventDefault()
 
     console.log('Date:', date.value)
@@ -91,38 +97,6 @@ const submitHandler = (e) => {
             totalPrice: props.total
         })
 
-        emailMutation.mutate({
-            cartList: cartItems,
-            subtotal: props.subtotal,
-            deliveryFee: props.deliveryFee,
-            taxPrice: props.taxPrice,
-            total: props.total,
-            email: email.value,
-            selected: date.value,
-            title: title.value
-        })
-
-        //    await cartStore.sendEmail({
-        //         cartList: cartItems,
-        //         subtotal: props.subtotal,
-        //         deliveryFee: props.deliveryFee,
-        //         taxPrice: props.taxPrice,
-        //         total: props.total,
-        //         email: email.value,
-        //         selected: date.value,
-        //         title: title.value
-        // })
-
-       
-        // cartStore.submitOrder({
-        //     title: title.value,
-        //     eventDate: date.value,
-        //     orderItems: cartItems,
-        //     itemsPrice: props.subtotal,
-        //     taxPrice: props.taxPrice,
-        //     totalPrice: props.total
-        // })
-
         
     }
 
@@ -135,11 +109,11 @@ const submitHandler = (e) => {
 
 <Dialog >
     <DialogTrigger class="w-full">
-      <button class="bg-blue-500 hover:bg-blue-600 transition duration-300 p-2 rounded-md w-full text-white">Email Quote</button>
+      <button class="bg-blue-500 hover:bg-blue-600 transition duration-300 p-2 rounded-md w-full text-white">Submit Quote</button>
     </DialogTrigger>
     <DialogContent class="">
       <DialogHeader>
-        <DialogTitle>Email Quote</DialogTitle>
+        <DialogTitle>Submit Quote</DialogTitle>
         <DialogDescription>
           
         </DialogDescription>

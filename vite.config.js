@@ -16,7 +16,7 @@ export default defineConfig({
   //   }
   // },
   optimizeDeps: {
-    include: ['maplibre-gl', 'geojson']
+    include: ['maplibre-gl', 'geojson', 'vue-bar-graph']
   },
   resolve: {
     alias: {
