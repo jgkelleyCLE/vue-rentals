@@ -1,4 +1,5 @@
 <script setup>
+import PageSpinner from '@/components/custom/Loading/PageSpinner.vue';
 import { useQuery } from '@tanstack/vue-query';
 import { useRoute } from 'vue-router';
 
@@ -8,7 +9,7 @@ const id = route.params.id
 
 
 
-const { data: searchTerm } = useQuery({
+const { data: searchTerm, isLoading } = useQuery({
     queryKey: ['search'],
     queryFn: async () => {
         const response = await fetch(`https://tentlify-ecom.up.railway.app/api/search/${id}`)
@@ -24,7 +25,12 @@ const { data: searchTerm } = useQuery({
 <template>
 
 <div class="mt-20 mx-auto w-11/12">
-    <h1 class="text-3xl">Search Details for "{{searchTerm?.term}}"</h1>
+
+    <div v-if="isLoading">
+        <PageSpinner />
+    </div>
+
+    <h1 v-else class="text-3xl">Search Details for "{{searchTerm?.term}}"</h1>
     <p>Results: {{searchTerm?.resultsCount}}</p>
     <div v-for="item in searchTerm?.resultIds" :key="item._id">
     <div  class="flex flex-row items-center justify-between border-b border-gray-200 p-4 w-11/12 mx-auto">
