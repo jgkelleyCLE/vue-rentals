@@ -1,12 +1,13 @@
 <script setup>
 import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
 
 const route = useRoute()
 
-const isActive = (path) => {
-    return route.path === path
-}
+const isAdminRoute = computed(() => {
+  return route.path.includes('/admin');
+});
 
 </script>
 
@@ -16,6 +17,6 @@ const isActive = (path) => {
         <router-link to="/product" active-class="text-safariGreen" >Products</router-link>
         <router-link to="/gallery" active-class="text-safariGreen" >Gallery</router-link>
         <router-link to="/location" active-class="text-safariGreen">Location</router-link>
-        <router-link to="/admin" active-class="text-safariGreen">Admin</router-link>
+        <router-link to="/admin" :class="{ 'text-safariGreen': isAdminRoute }">Admin</router-link>
 </div>
 </template>
