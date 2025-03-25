@@ -6,7 +6,7 @@ import { toast } from 'vue-sonner';
 
 // Define props - keep it simple
 const props = defineProps({
-  item: Object
+  item: Object,
 });
 
 console.log('Item', props.item);
@@ -15,13 +15,7 @@ console.log('Item', props.item);
 const orderStore = useOrderStore();
 
 // List of available statuses
-const statuses = [
-  'Quote',
-  'Reservation',
-  'Delivered',
-  'Closed',
-  'Cancelled'
-];
+const statuses = ['Quote', 'Reservation', 'Delivered', 'Closed', 'Cancelled'];
 
 // Create mutation
 const mutation = useMutation({
@@ -30,9 +24,9 @@ const mutation = useMutation({
     toast.success('Status updated successfully');
   },
   onError: (error) => {
-      toast.error('Error updating status');
-      console.log('Error updating status', error);
-  }
+    toast.error('Error updating status');
+    console.log('Error updating status', error);
+  },
 });
 </script>
 
@@ -40,14 +34,9 @@ const mutation = useMutation({
   <select
     :value="props?.item?.status || 'Quote'"
     @change="(e) => mutation.mutate(e.target.value)"
-    
     class="border border-gray-300 rounded-md px-2 py-1 text-gray-700"
   >
-    <option
-      v-for="status in statuses"
-      :key="status"
-      :value="status"
-    >
+    <option v-for="status in statuses" :key="status" :value="status">
       {{ status }}
     </option>
   </select>
